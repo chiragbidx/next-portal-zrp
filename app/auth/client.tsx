@@ -21,15 +21,6 @@ import {
   signUpWithPassword,
 } from "./actions";
 
-// Purpose: Client UI for /auth.
-// Use this file for auth mode toggles, form interactivity, and browser-only logic.
-//
-// Replication pattern for new interactive pages:
-// - Keep server mutations in `actions.ts`.
-// - Bind actions here with `useActionState`.
-// - Use local state only for presentation/interaction (tabs, steps, toggles).
-// - Keep forms simple: collect inputs and submit to a server action.
-
 type AuthMode = "signin" | "signup";
 
 type ClientProps = {
@@ -44,13 +35,7 @@ const initialActionState: AuthActionState = {
 };
 
 export default function Client({ redirectTo, flashStatus, flashMessage }: ClientProps) {
-  // UI state: only controls which form is shown.
   const [mode, setMode] = useState<AuthMode>("signin");
-
-  // Server action wiring:
-  // - `state` carries serializable feedback (error/success message).
-  // - `action` is assigned directly to form `action={...}`.
-  // - `pending` drives submit button loading state.
   const [signInState, signInAction, signInPending] = useActionState(
     signInWithPassword,
     initialActionState
@@ -69,7 +54,6 @@ export default function Client({ redirectTo, flashStatus, flashMessage }: Client
     }
   }, [activeState._devUrl]);
 
-  // URL hash keeps the auth mode linkable (`/auth#signin` or `/auth#signup`).
   useEffect(() => {
     const syncFromHash = () => {
       const hash = window.location.hash.replace("#", "").toLowerCase();
@@ -89,45 +73,43 @@ export default function Client({ redirectTo, flashStatus, flashMessage }: Client
   };
 
   const content = useMemo(() => {
-    // View-model for mode-specific heading/description copy.
     if (mode === "signup") {
       return {
         id: "signup",
-        title: "Create account",
-        description: "Start your free account in less than a minute.",
+        title: "Create your Streamly account",
+        description: "Start watching unlimited movies and shows for free.",
       };
     }
 
     return {
       id: "signin",
-      title: "Sign in",
-      description: "Use your email and password to continue.",
+      title: "Sign in to Streamly",
+      description: "Experience streaming without limits—sign in to continue.",
     };
   }, [mode]);
 
   return (
-    <main className="min-h-screen bg-[radial-gradient(circle_at_top,_hsl(var(--primary)/0.18),_transparent_45%),linear-gradient(to_bottom,_hsl(var(--background)),_hsl(var(--muted)/0.45))] px-6 py-10 sm:px-10 lg:px-16 lg:py-14">
+    <main className="min-h-screen bg-[radial-gradient(circle_at_top,_hsl(var(--primary)/0.21),_transparent_45%),linear-gradient(to_bottom,_hsl(var(--background)),_hsl(var(--muted)/0.45))] px-6 py-10 sm:px-10 lg:px-16 lg:py-14">
       <section className="mx-auto grid w-full max-w-6xl overflow-hidden rounded-3xl border border-secondary bg-card/60 shadow-2xl backdrop-blur-sm lg:grid-cols-2">
         <aside className="relative hidden min-h-[720px] p-10 lg:block">
           <div className="absolute inset-0 bg-gradient-to-br from-primary/25 via-transparent to-primary/10" />
           <div className="relative z-10 flex h-full flex-col justify-between">
             <div className="space-y-4">
               <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary/80">
-                Panda Access
+                Welcome to Streamly
               </p>
               <h1 className="max-w-sm text-4xl font-semibold leading-tight tracking-tight">
-                Launch faster with one workspace for your team.
+                Streaming made simple.
               </h1>
               <p className="max-w-md text-sm text-muted-foreground">
-                Secure auth, polished interface, and a clean onboarding flow built
-                for production teams.
+                Explore trending blockbusters, family favorites, and series—get started in seconds and enjoy a seamless viewing experience.
               </p>
             </div>
 
             <div className="relative overflow-hidden rounded-2xl border border-secondary/70 bg-background/80 p-3 shadow-lg">
               <Image
                 src="/demo-img.jpg"
-                alt="Panda product preview"
+                alt="Streamly product preview"
                 className="h-full w-full rounded-xl object-cover"
                 width={1200}
                 height={900}
@@ -160,7 +142,7 @@ export default function Client({ redirectTo, flashStatus, flashMessage }: Client
                       : "text-muted-foreground hover:text-foreground"
                   }`}
                 >
-                  Sign up
+                  Get started
                 </button>
               </div>
 
@@ -184,7 +166,6 @@ export default function Client({ redirectTo, flashStatus, flashMessage }: Client
               ) : null}
 
               {mode === "signin" ? (
-                // Sign-in form submits directly to server action.
                 <form className="space-y-4" action={signInAction}>
                   {redirectTo && <input type="hidden" name="redirectTo" value={redirectTo} />}
                   <div className="space-y-2">
@@ -193,7 +174,7 @@ export default function Client({ redirectTo, flashStatus, flashMessage }: Client
                       id="signin-email"
                       name="email"
                       type="email"
-                      placeholder="you@company.com"
+                      placeholder="your@email.com"
                       required
                     />
                   </div>
@@ -219,27 +200,23 @@ export default function Client({ redirectTo, flashStatus, flashMessage }: Client
                   </Button>
                 </form>
               ) : (
-                // Sign-up form submits directly to server action.
                 <form className="space-y-4" action={signUpAction}>
                   {redirectTo && <input type="hidden" name="redirectTo" value={redirectTo} />}
-                  <div className="grid gap-4 sm:grid-cols-2">
-                    <div className="space-y-2">
-                      <Label htmlFor="signup-first-name">First name</Label>
-                      <Input id="signup-first-name" name="firstName" placeholder="Chirag" required />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="signup-last-name">Last name</Label>
-                      <Input id="signup-last-name" name="lastName" placeholder="Dodiya" required />
-                    </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="signup-first-name">First name</Label>
+                    <Input id="signup-first-name" name="firstName" placeholder="Your first name" required />
                   </div>
-
+                  <div className="space-y-2">
+                    <Label htmlFor="signup-last-name">Last name</Label>
+                    <Input id="signup-last-name" name="lastName" placeholder="Your last name" required />
+                  </div>
                   <div className="space-y-2">
                     <Label htmlFor="signup-email">Email</Label>
                     <Input
                       id="signup-email"
                       name="email"
                       type="email"
-                      placeholder="you@company.com"
+                      placeholder="your@email.com"
                       required
                     />
                   </div>
@@ -268,7 +245,7 @@ export default function Client({ redirectTo, flashStatus, flashMessage }: Client
                   </div>
 
                   <Button type="submit" className="w-full" disabled={isPending}>
-                    {isPending ? "Creating account..." : "Create account"}
+                    {isPending ? "Creating account..." : "Create your free account"}
                   </Button>
                 </form>
               )}
