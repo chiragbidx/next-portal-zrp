@@ -1,8 +1,5 @@
 "use client";
 
-// Purpose: Client UI for /auth/reset-password/[token].
-// Shows an expired-link message or a new-password form depending on token validity.
-
 import Link from "next/link";
 import { useActionState } from "react";
 
@@ -34,13 +31,13 @@ export default function Client({ token, valid }: ClientProps) {
 
   if (!valid) {
     return (
-      <main className="min-h-screen bg-[radial-gradient(circle_at_top,_hsl(var(--primary)/0.18),_transparent_45%),linear-gradient(to_bottom,_hsl(var(--background)),_hsl(var(--muted)/0.45))] px-6 py-10 sm:px-10 lg:px-16 lg:py-14">
+      <main className="min-h-screen bg-[radial-gradient(circle_at_top,_hsl(var(--primary)/0.21),_transparent_45%),linear-gradient(to_bottom,_hsl(var(--background)),_hsl(var(--muted)/0.45))] px-6 py-10 sm:px-10 lg:px-16 lg:py-14">
         <section className="mx-auto flex min-h-[720px] w-full max-w-md items-center justify-center">
           <Card className="w-full border-secondary/70 shadow-xl">
             <CardHeader className="space-y-1">
               <CardTitle>Link expired</CardTitle>
               <CardDescription>
-                This password reset link is invalid or has expired.
+                This password reset link is invalid or has expired. Please request a new one.
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -48,7 +45,7 @@ export default function Client({ token, valid }: ClientProps) {
                 href="/auth/forgot-password"
                 className="text-sm font-medium text-primary hover:underline"
               >
-                Request a new reset link
+                Request new link
               </Link>
             </CardContent>
           </Card>
@@ -58,13 +55,13 @@ export default function Client({ token, valid }: ClientProps) {
   }
 
   return (
-    <main className="min-h-screen bg-[radial-gradient(circle_at_top,_hsl(var(--primary)/0.18),_transparent_45%),linear-gradient(to_bottom,_hsl(var(--background)),_hsl(var(--muted)/0.45))] px-6 py-10 sm:px-10 lg:px-16 lg:py-14">
+    <main className="min-h-screen bg-[radial-gradient(circle_at_top,_hsl(var(--primary)/0.21),_transparent_45%),linear-gradient(to_bottom,_hsl(var(--background)),_hsl(var(--muted)/0.45))] px-6 py-10 sm:px-10 lg:px-16 lg:py-14">
       <section className="mx-auto flex min-h-[720px] w-full max-w-md items-center justify-center">
         <Card className="w-full border-secondary/70 shadow-xl">
           <CardHeader className="space-y-1">
-            <CardTitle>Reset password</CardTitle>
+            <CardTitle>Choose a new password</CardTitle>
             <CardDescription>
-              Choose a new password for your account.
+              Secure your Streamly account by creating a new password.
             </CardDescription>
           </CardHeader>
 
@@ -97,7 +94,7 @@ export default function Client({ token, valid }: ClientProps) {
               </div>
 
               <Button type="submit" className="w-full" disabled={pending}>
-                {pending ? "Resetting..." : "Reset password"}
+                {pending ? "Resetting..." : "Set new password"}
               </Button>
             </form>
 
