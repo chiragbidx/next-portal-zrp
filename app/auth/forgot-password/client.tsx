@@ -1,8 +1,5 @@
 "use client";
 
-// Purpose: Client UI for /auth/forgot-password.
-// Collects email, submits to forgotPasswordAction, shows confirmation.
-
 import Link from "next/link";
 import { useActionState, useEffect } from "react";
 
@@ -34,14 +31,13 @@ export default function Client() {
   }, [state._devUrl]);
 
   return (
-    <main className="min-h-screen bg-[radial-gradient(circle_at_top,_hsl(var(--primary)/0.18),_transparent_45%),linear-gradient(to_bottom,_hsl(var(--background)),_hsl(var(--muted)/0.45))] px-6 py-10 sm:px-10 lg:px-16 lg:py-14">
+    <main className="min-h-screen bg-[radial-gradient(circle_at_top,_hsl(var(--primary)/0.21),_transparent_45%),linear-gradient(to_bottom,_hsl(var(--background)),_hsl(var(--muted)/0.45))] px-6 py-10 sm:px-10 lg:px-16 lg:py-14">
       <section className="mx-auto flex min-h-[720px] w-full max-w-md items-center justify-center">
         <Card className="w-full border-secondary/70 shadow-xl">
           <CardHeader className="space-y-1">
-            <CardTitle>Forgot password</CardTitle>
+            <CardTitle>Reset your password</CardTitle>
             <CardDescription>
-              Enter your email and we&apos;ll send you a link to reset your
-              password.
+              Enter your email and receive a link to create a new password for Streamly.
             </CardDescription>
           </CardHeader>
 
@@ -62,18 +58,18 @@ export default function Client() {
               <>
                 <form className="space-y-4" action={action}>
                   <div className="space-y-2">
-                    <Label htmlFor="forgot-email">Email</Label>
+                    <Label htmlFor="forgot-email">Email address</Label>
                     <Input
                       id="forgot-email"
                       name="email"
                       type="email"
-                      placeholder="you@company.com"
+                      placeholder="your@email.com"
                       required
                     />
                   </div>
 
                   <Button type="submit" className="w-full" disabled={pending}>
-                    {pending ? "Sending..." : "Send reset link"}
+                    {pending ? "Sending..." : "Send link"}
                   </Button>
                 </form>
 
